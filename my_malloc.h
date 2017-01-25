@@ -5,12 +5,15 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Wed Jan 25 11:40:42 2017 Nathan Scutari
+** Last update Wed Jan 25 12:20:23 2017 Nathan Scutari
 */
 
 #ifndef MY_MALLOC_H_
 # define MY_MALLOC_H_
 
+#define _GNU_SOURCE
+
+#include <unistd.h>
 #include <stdlib.h>
 
 # define align8(x) (((((x)-1)>>4)<<4)+8)
