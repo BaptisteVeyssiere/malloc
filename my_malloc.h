@@ -5,13 +5,15 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Wed Jan 25 11:01:58 2017 Nathan Scutari
+** Last update Wed Jan 25 11:40:42 2017 Nathan Scutari
 */
 
 #ifndef MY_MALLOC_H_
 # define MY_MALLOC_H_
 
 #include <stdlib.h>
+
+# define align8(x) (((((x)-1)>>4)<<4)+8)
 
 typedef struct	s_malloc
 {
@@ -20,6 +22,7 @@ typedef struct	s_malloc
   struct s_malloc	*prev;
   int			is_free;
   void			*block;
+  char			data[1];
 }		t_malloc;
 
 t_malloc	*blocks = NULL;
