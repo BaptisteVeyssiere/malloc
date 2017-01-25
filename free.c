@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:57:32 2017 Baptiste Veyssiere
-** Last update Wed Jan 25 12:02:34 2017 Baptiste Veyssiere
+** Last update Wed Jan 25 12:06:23 2017 Baptiste Veyssiere
 */
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 
 void	fusion(t_malloc *tmp)
 {
-  tmp->size += tmp->next->size;
+  tmp->size += tmp->next->size + sizeof(t_malloc);
   tmp->next = tmp->next->next;
   tmp->next->prev = tmp;
 }
