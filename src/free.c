@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:57:32 2017 Baptiste Veyssiere
-** Last update Wed Jan 25 12:14:47 2017 Baptiste Veyssiere
+** Last update Wed Jan 25 19:27:48 2017 Nathan Scutari
 */
 
 #include "my_malloc.h"
@@ -14,7 +14,8 @@ void	fusion(t_malloc *tmp)
 {
   tmp->size += tmp->next->size + sizeof(t_malloc);
   tmp->next = tmp->next->next;
-  tmp->next->prev = tmp;
+  if (tmp->next)
+    tmp->next->prev = tmp;
 }
 
 void	free(void *ptr)
@@ -22,29 +23,31 @@ void	free(void *ptr)
   t_malloc	*tmp;
 
   tmp = blocks;
-  
+
   /* Vérification de l'alignement */
-  if ((long)ptr % 4)
+  if ((long)ptr % (long)4)
     {
       write(2, "Pointer non-aligned\n", 20);
       return ;
     }
 
   /* Vérification zone */
-  if ((long)ptr < (long)blocks && (long)ptr > (long)sbrk(0))
+  if ((void*)ptr < (void*)blocks || (void*)ptr > (void*)sbrk(0))
     {
       write(2, "Pointer out of zone\n", 20);
       return ;
     }
       
   /* Trouver le bon maillon */
-  while (tmp && tmp->next)
+  while (tmp)
     {
       if (tmp->block == ptr)
 	break;
       tmp = tmp->next;
     }
-
+  if (!tmp)
+    return ;
+  
   if (tmp->is_free == 1)
     {
       write(2, "Double free or corruption\n", 26);

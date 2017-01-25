@@ -5,7 +5,7 @@
 ## Login   <veyssi_b@epitech.net>
 ## 
 ## Started on  Tue Jan 24 16:16:32 2017 Baptiste Veyssiere
-## Last update Tue Jan 24 16:21:05 2017 Baptiste Veyssiere
+## Last update Wed Jan 25 18:31:49 2017 Nathan Scutari
 ##
 
 NAME	= libmy_malloc.so
@@ -16,7 +16,8 @@ CC	= gcc
 
 MKDIR	= mkdir -p
 
-SRC	= src/main.c
+SRC	= src/my_malloc.c \
+	  src/free.c
 
 SRCDIR	= src
 

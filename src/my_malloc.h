@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Wed Jan 25 12:20:23 2017 Nathan Scutari
+** Last update Wed Jan 25 19:45:00 2017 Nathan Scutari
 */
 
 #ifndef MY_MALLOC_H_
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-# define align8(x) (((((x)-1)>>4)<<4)+8)
+# define align8(x) ((x-1)/8*8+8)
 
 typedef struct	s_malloc
 {
@@ -28,6 +28,6 @@ typedef struct	s_malloc
   char			data[1];
 }		t_malloc;
 
-t_malloc	*blocks = NULL;
+extern t_malloc	*blocks;
 
 #endif /* !MY_MALLOC_H_ */

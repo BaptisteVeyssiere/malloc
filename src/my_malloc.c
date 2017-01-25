@@ -5,18 +5,23 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Wed Jan 25 12:19:34 2017 Nathan Scutari
+** Last update Wed Jan 25 19:43:03 2017 Nathan Scutari
 */
 
 #include <unistd.h>
+#include <stdio.h>
 #include "my_malloc.h"
+
+t_malloc	*blocks = NULL;
 
 static void	*first_alloc(size_t size)
 {
-  sbrk(0); // some weird magics
   blocks = sbrk(0);
   if ((sbrk(align8(size) + sizeof(t_malloc))) == (void *)-1)
-    return (NULL);
+    {
+      write(1, "b", 1);
+      return (NULL);
+    }
   blocks->size = align8(size);
   blocks->block = ((void*)blocks) + sizeof(t_malloc);
   blocks->prev = NULL;
@@ -25,7 +30,7 @@ static void	*first_alloc(size_t size)
   return (blocks->block);
 }
 
-static void	*split_block(t_malloc *tmp, t_malloc *save, size_t size)
+static void	*split_block(t_malloc *tmp, size_t size)
 {
   t_malloc	*new;
 
@@ -57,7 +62,10 @@ static void	*add_allocation(t_malloc *save, size_t size)
   new = sbrk(0);
   save->next = new;
   if ((sbrk(align8(size) + sizeof(t_malloc))) == (void *)-1)
-    return (NULL);
+    {
+      write(1, "c", 1);
+      return (NULL);
+    }
   new->size = align8(size);
   new->block = ((void*)new) + sizeof(t_malloc);
   new->prev = save;
@@ -74,26 +82,51 @@ void	*malloc(size_t size)
   tmp = NULL;
   save = NULL;
   if (size == 0)
-    return (NULL); // duh
+    {
+      write(1, "a", 1);
+      return (NULL); // duh
+    }
   if (blocks == NULL)
     return (first_alloc(size));
   tmp = blocks;
   while (tmp != NULL)
     {
       if (tmp->size >= align8(size) && tmp->is_free)
-	return (split_block(tmp, save, align8(size)));
+	return (split_block(tmp, align8(size)));
       save = tmp;
       tmp = tmp->next;
     }
   return (add_allocation(save, size));
 }
 
+void	show_alloc_mem()
+{
+  t_malloc	*tmp;
+
+  tmp = blocks;
+  printf("%p\n", sbrk(0));
+  while (tmp != NULL)
+    {
+      if (!tmp->is_free || tmp->is_free)
+	printf("%p - %p: %u bytes\n", tmp,
+	       (void*)tmp + tmp->size, (unsigned int)tmp->size);
+      tmp = tmp->next;
+    }
+}
+
 int	main()
 {
   char	*str;
   char	*str2;
-
-  str = malloc(8);
-  str2 = malloc(8);
+  char	*str3;
+  
+  str = malloc(500);
+  str2 = malloc(600);
+  str3 = malloc(2300);
+  free(str);
+  free(str2);
+  free(str3);
+  str = malloc(800);
+  show_alloc_mem();
   return (0);
 }
