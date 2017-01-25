@@ -5,11 +5,9 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:57:32 2017 Baptiste Veyssiere
-** Last update Wed Jan 25 12:06:23 2017 Baptiste Veyssiere
+** Last update Wed Jan 25 12:14:47 2017 Baptiste Veyssiere
 */
 
-#include <stdio.h>
-#include <unistd.h>
 #include "my_malloc.h"
 
 void	fusion(t_malloc *tmp)
@@ -33,7 +31,7 @@ void	free(void *ptr)
     }
 
   /* Vérification zone */
-  if (ptr < blocks && ptr > sbrk(0))
+  if ((long)ptr < (long)blocks && (long)ptr > (long)sbrk(0))
     {
       write(2, "Pointer out of zone\n", 20);
       return ;
@@ -42,20 +40,20 @@ void	free(void *ptr)
   /* Trouver le bon maillon */
   while (tmp && tmp->next)
     {
-      if (tmp->ptr == ptr)
+      if (tmp->block == ptr)
 	break;
       tmp = tmp->next;
     }
 
-  if (tmp->free == 1)
+  if (tmp->is_free == 1)
     {
       write(2, "Double free or corruption\n", 26);
       return ;
     }
   
-  tmp->free = 1;
-  if (tmp->prev && tmp->prev->free == 1)
+  tmp->is_free = 1;
+  if (tmp->prev && tmp->prev->is_free == 1)
     fusion(tmp->prev);
-  if (tmp->next && tmp->next->free == 1)
+  if (tmp->next && tmp->next->is_free == 1)
     fusion(tmp);
 }
