@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Wed Jan 25 19:43:03 2017 Nathan Scutari
+** Last update Wed Jan 25 20:05:17 2017 Baptiste Veyssiere
 */
 
 #include <unistd.h>
@@ -13,6 +13,14 @@
 #include "my_malloc.h"
 
 t_malloc	*blocks = NULL;
+
+static void	my_put_nbr(int nbr)
+{
+  if (nbr >= 10)
+    my_put_nbr(nbr / 10);
+  nbr = nbr % 10 + 48;
+  write(1, &nbr, 1);
+}
 
 static void	*first_alloc(size_t size)
 {
@@ -104,12 +112,19 @@ void	show_alloc_mem()
   t_malloc	*tmp;
 
   tmp = blocks;
-  printf("%p\n", sbrk(0));
+  IntToHex((long)sbrk(0));
+  write(1, "\n", 1);
   while (tmp != NULL)
     {
       if (!tmp->is_free || tmp->is_free)
-	printf("%p - %p: %u bytes\n", tmp,
-	       (void*)tmp + tmp->size, (unsigned int)tmp->size);
+	{
+	  IntToHex((long)tmp);
+	  write(1, " - ", 3);
+	  IntToHex((long)((void*)tmp + tmp->size));
+	  write(1, ": ", 2);
+	  my_put_nbr(tmp->size);
+	  write(1, " bytes\n", 7);
+	}
       tmp = tmp->next;
     }
 }
