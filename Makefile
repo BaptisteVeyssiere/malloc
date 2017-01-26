@@ -5,7 +5,6 @@
 ## Login   <veyssi_b@epitech.net>
 ## 
 ## Started on  Tue Jan 24 16:16:32 2017 Baptiste Veyssiere
-## Last update Wed Jan 25 19:47:32 2017 Baptiste Veyssiere
 ##
 
 NAME	= libmy_malloc.so
@@ -18,6 +17,7 @@ MKDIR	= mkdir -p
 
 SRC	= src/my_malloc.c \
 	src/free.c \
+	src/realloc.c \
 	src/IntToHex.c
 
 SRCDIR	= src

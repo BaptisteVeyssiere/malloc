@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Wed Jan 25 20:05:17 2017 Baptiste Veyssiere
+** Last update Thu Jan 26 13:12:37 2017 Baptiste Veyssiere
 */
 
 #include <unistd.h>
@@ -26,10 +26,7 @@ static void	*first_alloc(size_t size)
 {
   blocks = sbrk(0);
   if ((sbrk(align8(size) + sizeof(t_malloc))) == (void *)-1)
-    {
-      write(1, "b", 1);
-      return (NULL);
-    }
+    return (NULL);
   blocks->size = align8(size);
   blocks->block = ((void*)blocks) + sizeof(t_malloc);
   blocks->prev = NULL;
@@ -70,10 +67,7 @@ static void	*add_allocation(t_malloc *save, size_t size)
   new = sbrk(0);
   save->next = new;
   if ((sbrk(align8(size) + sizeof(t_malloc))) == (void *)-1)
-    {
-      write(1, "c", 1);
-      return (NULL);
-    }
+    return (NULL);
   new->size = align8(size);
   new->block = ((void*)new) + sizeof(t_malloc);
   new->prev = save;
@@ -90,10 +84,7 @@ void	*malloc(size_t size)
   tmp = NULL;
   save = NULL;
   if (size == 0)
-    {
-      write(1, "a", 1);
-      return (NULL); // duh
-    }
+    return (NULL);
   if (blocks == NULL)
     return (first_alloc(size));
   tmp = blocks;
@@ -132,16 +123,14 @@ void	show_alloc_mem()
 int	main()
 {
   char	*str;
-  char	*str2;
-  char	*str3;
-  
-  str = malloc(500);
-  str2 = malloc(600);
-  str3 = malloc(2300);
-  free(str);
-  free(str2);
-  free(str3);
-  str = malloc(800);
+
+  str = malloc(100);
+  str[0] = str[1] = '4';
+  str = realloc(str, 4);
+  write(1, &str[0], 1);
+  write(1, &str[1], 1);
+  write(1, "\n", 1);
+  my_put_nbr(sizeof(t_malloc));
   show_alloc_mem();
   return (0);
 }

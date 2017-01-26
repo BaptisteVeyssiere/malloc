@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Wed Jan 25 19:55:23 2017 Baptiste Veyssiere
+** Last update Thu Jan 26 13:12:20 2017 Baptiste Veyssiere
 */
 
 #ifndef MY_MALLOC_H_
@@ -27,7 +27,6 @@ typedef struct	s_malloc
   struct s_malloc	*prev;
   int			is_free;
   void			*block;
-  char			data[1];
 }		t_malloc;
 
 extern t_malloc	*blocks;
