@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Thu Jan 26 13:12:37 2017 Baptiste Veyssiere
+** Last update Thu Jan 26 13:38:28 2017 Baptiste Veyssiere
 */
 
 #include <unistd.h>
@@ -107,7 +107,7 @@ void	show_alloc_mem()
   write(1, "\n", 1);
   while (tmp != NULL)
     {
-      if (!tmp->is_free || tmp->is_free)
+      if (!tmp->is_free)
 	{
 	  IntToHex((long)tmp);
 	  write(1, " - ", 3);

@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Thu Jan 26 12:38:06 2017 Baptiste Veyssiere
-** Last update Thu Jan 26 13:17:09 2017 Baptiste Veyssiere
+** Last update Fri Jan 27 12:00:07 2017 Baptiste Veyssiere
 */
 
 #include "my_malloc.h"
@@ -15,18 +15,16 @@ t_malloc	*check_realloc(void *ptr)
   t_malloc	*tmp;
 
   tmp  = blocks;
-  
-  if (!ptr)
-    return (NULL);
+
   if ((long)ptr % (long)4)
     {
-      write(2, "Pointer non-aligned\n", 20);
-      return NULL;
+      write(2, "Pointer non-aliaaagned\n", 20);
+      return (NULL);
     }
   if ((void*)ptr < (void*)blocks || (void*)ptr > (void*)sbrk(0))
     {
-      write(2, "Pointer out of zone\n", 20);
-      return NULL;
+      write(2, "Pointer out of zonaaae\n", 20);
+      return (NULL);
     }
   while (tmp)
     {
@@ -35,7 +33,7 @@ t_malloc	*check_realloc(void *ptr)
       tmp = tmp->next;
     }
   if (!tmp)
-    return NULL;
+    return (NULL);
   return (tmp);
 }
 
@@ -44,11 +42,19 @@ void	*realloc(void *ptr, size_t size)
   t_malloc	*tmp;
   void		*ret;
 
-  if (!(tmp = check_realloc(ptr)))
-    return NULL;
-  free(tmp->block);
-  if (!(ret = malloc(size)))
+  if (ptr == NULL)
+    return (malloc(size));
+  else if (size == 0)
+    {
+      free(ptr);
+      return (NULL);
+    }
+  
+  if ((tmp = check_realloc(ptr)) == NULL)
     return (NULL);
+  if ((ret = malloc(size)) == NULL)
+    return (ptr);
+  free(tmp->block);
   if (tmp->block == ret)
     return (ret);
   for (unsigned int i = 0; i < tmp->size; ++i)
