@@ -5,10 +5,22 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Thu Jan 26 12:38:06 2017 Baptiste Veyssiere
-** Last update Fri Jan 27 12:00:07 2017 Baptiste Veyssiere
+** Last update Fri Jan 27 11:15:12 2017 Nathan Scutari
 */
 
 #include "my_malloc.h"
+
+void		*calloc(size_t nelem, size_t elsize)
+{
+  void	*ptr;
+
+  if (nelem == 0 || elsize == 0 ||
+      (ptr = malloc(nelem * elsize)) == NULL)
+    return (NULL);
+  for (size_t i = 0 ; i < nelem * elsize ; ++i)
+    *((char*)(ptr + i)) = 0;
+  return (ptr);
+}
 
 t_malloc	*check_realloc(void *ptr)
 {
