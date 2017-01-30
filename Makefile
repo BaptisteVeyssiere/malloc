@@ -1,9 +1,9 @@
 ##
 ## Makefile for malloc in /home/veyssi_b/rendu/tek2/PSU/PSU_2016_malloc
-## 
+##
 ## Made by Baptiste Veyssiere
 ## Login   <veyssi_b@epitech.net>
-## 
+##
 ## Started on  Tue Jan 24 16:16:32 2017 Baptiste Veyssiere
 ##
 
@@ -26,7 +26,7 @@ OBJDIR	= obj
 
 OBJ	= $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-CFLAGS	= -W -Werror -Wextra -Wall -finstrument-functions
+CFLAGS	= -W -Werror -Wextra -Wall -I./include -finstrument-functions
 
 $(NAME): $(OBJ)
 	@$(CC) -shared -o $(NAME) $(OBJ)

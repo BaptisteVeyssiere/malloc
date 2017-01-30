@@ -1,11 +1,11 @@
 /*
 ** realloc.c for Project-Master in /home/veyssi_b/rendu/tek2/PSU/PSU_2016_malloc
-** 
+**
 ** Made by Baptiste Veyssiere
 ** Login   <veyssi_b@epitech.net>
-** 
+**
 ** Started on  Thu Jan 26 12:38:06 2017 Baptiste Veyssiere
-** Last update Mon Jan 30 12:51:24 2017 Baptiste Veyssiere
+** Last update Mon Jan 30 17:21:48 2017 Baptiste Veyssiere
 */
 
 #include "my_malloc.h"
@@ -17,8 +17,8 @@ void		*calloc(size_t nelem, size_t elsize)
   if (nelem == 0 || elsize == 0 ||
       (ptr = malloc(nelem * elsize)) == NULL)
     return (NULL);
-  for (size_t i = 0 ; i < nelem * elsize ; ++i)
-    *((char*)(ptr + i)) = 0;
+  for (size_t i = 0; i < (nelem * elsize); ++i)
+    *(((char*)ptr) + i) = 0;
   return (ptr);
 }
 
@@ -61,7 +61,7 @@ void	*realloc(void *ptr, size_t size)
       free(ptr);
       return (NULL);
     }
-  
+
   if ((tmp = check_realloc(ptr)) == NULL)
     return (NULL);
   if ((ret = malloc(size)) == NULL)
