@@ -4,56 +4,16 @@
 ** Made by Baptiste Veyssiere
 ** Login   <veyssi_b@epitech.net>
 ** 
-** Started on  Thu Jan 26 12:38:06 2017 Baptiste Veyssiere
-** Last update Fri Jan 27 11:15:12 2017 Nathan Scutari
+** Started on  Mon Jan 30 15:29:31 2017 Baptiste Veyssiere
+** Last update Mon Jan 30 15:45:37 2017 Baptiste Veyssiere
 */
 
-#include "my_malloc.h"
+#include "malloc.h"
 
-void		*calloc(size_t nelem, size_t elsize)
-{
-  void	*ptr;
-
-  if (nelem == 0 || elsize == 0 ||
-      (ptr = malloc(nelem * elsize)) == NULL)
-    return (NULL);
-  for (size_t i = 0 ; i < nelem * elsize ; ++i)
-    *((char*)(ptr + i)) = 0;
-  return (ptr);
-}
-
-t_malloc	*check_realloc(void *ptr)
+void		*realloc(void *ptr, size_t size)
 {
   t_malloc	*tmp;
-
-  tmp  = blocks;
-
-  if ((long)ptr % (long)4)
-    {
-      write(2, "Pointer non-aliaaagned\n", 20);
-      return (NULL);
-    }
-  if ((void*)ptr < (void*)blocks || (void*)ptr > (void*)sbrk(0))
-    {
-      write(2, "Pointer out of zonaaae\n", 20);
-      return (NULL);
-    }
-  while (tmp)
-    {
-      if (tmp->block == ptr)
-	break;
-      tmp = tmp->next;
-    }
-  if (!tmp)
-    return (NULL);
-  return (tmp);
-}
-
-void	*realloc(void *ptr, size_t size)
-{
-  t_malloc	*tmp;
-  void		*ret;
-
+  
   if (ptr == NULL)
     return (malloc(size));
   else if (size == 0)
@@ -62,14 +22,13 @@ void	*realloc(void *ptr, size_t size)
       return (NULL);
     }
   
-  if ((tmp = check_realloc(ptr)) == NULL)
-    return (NULL);
-  if ((ret = malloc(size)) == NULL)
-    return (ptr);
-  free(tmp->block);
-  if (tmp->block == ret)
-    return (ret);
-  for (unsigned int i = 0; i < tmp->size; ++i)
-    *((char*)ret + i) = *((char*)(tmp->block) + i);
-  return (ret);
+  tmp = blocks;
+  while (tmp)
+    {
+      if (tmp->block == ptr)
+	break;
+      tmp = tmp->next;
+    }
+  if (tmp == NULL)
+    
 }

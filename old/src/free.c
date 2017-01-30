@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:57:32 2017 Baptiste Veyssiere
-** Last update Fri Jan 27 11:35:12 2017 Nathan Scutari
+** Last update Mon Jan 30 12:51:06 2017 Baptiste Veyssiere
 */
 
 #include "my_malloc.h"
@@ -14,12 +14,6 @@ void	show_alloc_mem();
 
 void	fusion(t_malloc *tmp)
 {
-  IntToHex((long)tmp);
-  write(1, "\n", 1);
-  IntToHex((long)tmp->next);
-  write(1, "\n", 1);
-  IntToHex((long)tmp->prev);
-  write(1, "\n\n", 2);
   if (tmp->next)
     {
       tmp->size += tmp->next->size + sizeof(t_malloc);

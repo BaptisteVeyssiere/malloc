@@ -26,7 +26,7 @@ OBJDIR	= obj
 
 OBJ	= $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-CFLAGS	= -W -Werror -Wextra -Wall
+CFLAGS	= -W -Werror -Wextra -Wall -finstrument-functions
 
 $(NAME): $(OBJ)
 	@$(CC) -shared -o $(NAME) $(OBJ)

@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 ** 
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Fri Jan 27 11:31:19 2017 Nathan Scutari
+** Last update Mon Jan 30 12:51:33 2017 Baptiste Veyssiere
 */
 
 #include <unistd.h>
@@ -39,7 +39,7 @@ static void	*split_block(t_malloc *tmp, size_t size)
 {
   t_malloc	*new;
 
-  if (tmp->size >= size + sizeof(t_malloc) + 4)
+  if (tmp->size >= (size + sizeof(t_malloc) + 4))
     {
       new = tmp->block + size;
       new->block = ((void*)new) + sizeof(t_malloc);
@@ -118,19 +118,4 @@ void	show_alloc_mem()
 	}
       tmp = tmp->next;
     }
-}
-
-int	main()
-{
-  char	*str;
-
-  str = malloc(100);
-  str[0] = str[1] = '4';
-  str = realloc(str, 4);
-  write(1, &str[0], 1);
-  write(1, &str[1], 1);
-  write(1, "\n", 1);
-  my_put_nbr(sizeof(t_malloc));
-  show_alloc_mem();
-  return (0);
 }
