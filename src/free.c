@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 10:44:20 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 13:16:14 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
@@ -37,6 +37,7 @@ t_malloc	*get_free_tmp(void *ptr)
     free_error_msg("free(): invalid pointer: ", 25, ptr);
   if (tmp->is_free == true)
     free_error_msg("double free or corruption: ", 27, ptr);
+  tmp->next_free = free->next_free;
   free->next_free = tmp;
   return (tmp);
 }
