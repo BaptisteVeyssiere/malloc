@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 15:25:20 2017 Nathan Scutari
+** Last update Tue Jan 31 16:41:27 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
@@ -23,6 +23,16 @@ t_malloc	*get_free_tmp(void *ptr)
   t_malloc	*tmp;
   t_malloc	*free;
 
+  tmp = blocks;
+  while (tmp)
+    {
+      write(1, "tmp_block = ", 10);
+      LongToHex((long)tmp->block);
+      write(1, "\n", 1);
+      if (tmp->block == ptr)
+	write(1, "TROUVE\n", 7);
+      tmp = tmp->next;
+    }
   tmp = blocks;
   free = blocks;
   while (tmp)
@@ -46,15 +56,19 @@ void	fusion(t_malloc *tmp)
 {
   tmp->size += tmp->next->size + sizeof(t_malloc);
   tmp->next_free = tmp->next->next_free;
+  if (tmp->next == last)
+    last = tmp;
   tmp->next = tmp->next->next;
   if (tmp->next)
     tmp->next->prev = tmp;
+
 }
 
 void		free(void *ptr)
 {
   t_malloc	*tmp;
 
+  write(1, "Free:\n", 6);
   if (ptr == NULL)
     return ;
   if (((long)ptr % 4) != 0)
@@ -62,7 +76,6 @@ void		free(void *ptr)
       write(2, "Pointer not aligned\n", 20);
       exit(134);
     }
-  write(1, "f", 1);
   if ((long)ptr < (long)blocks || (long)ptr > (long)sbrk(0))
     {
       write(2, "Invalid free\n", 13);
@@ -71,8 +84,8 @@ void		free(void *ptr)
 
   tmp = get_free_tmp(ptr);
   tmp->is_free = true;
-  if (tmp->prev && tmp->prev->is_free)
+  if (tmp->prev && tmp->prev->is_free == true)
     fusion(tmp->prev);
-  if (tmp->next && tmp->next->is_free)
+  if (tmp->next && tmp->next->is_free == true)
     fusion(tmp);
 }
