@@ -1,11 +1,11 @@
 /*
 ** my_malloc.c for malloc in /home/scutar_n/rendu/PSU/memory/PSU_2016_malloc
-** 
+**
 ** Made by Nathan Scutari
 ** Login   <scutar_n@epitech.net>
-** 
+**
 ** Started on  Wed Jan 25 10:56:02 2017 Nathan Scutari
-** Last update Mon Jan 30 12:51:33 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 10:25:27 2017 Nathan Scutari
 */
 
 #include <unistd.h>
@@ -13,14 +13,6 @@
 #include "my_malloc.h"
 
 t_malloc	*blocks = NULL;
-
-static void	my_put_nbr(int nbr)
-{
-  if (nbr >= 10)
-    my_put_nbr(nbr / 10);
-  nbr = nbr % 10 + 48;
-  write(1, &nbr, 1);
-}
 
 static void	*first_alloc(size_t size)
 {
