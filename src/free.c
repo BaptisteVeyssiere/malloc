@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 16:45:34 2017 Nathan Scutari
+** Last update Tue Jan 31 17:09:27 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -73,8 +73,8 @@ void		free(void *ptr)
 
   tmp = get_free_tmp(ptr);
   tmp->is_free = true;
+  if (tmp->next && tmp->next->is_free == true)
+      fusion(tmp);
   if (tmp->prev && tmp->prev->is_free == true)
     fusion(tmp->prev);
-  if (tmp->next && tmp->next->is_free == true)
-    fusion(tmp);
 }

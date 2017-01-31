@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Tue Jan 31 16:48:28 2017 Nathan Scutari
+** Last update Tue Jan 31 17:04:12 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -123,6 +123,8 @@ void	*malloc(size_t size)
       if (!tmp)
 	tmp = add_alloc(prev_free, size);
     }
+  my_put_nbr(last->size);
+  write(1, "\n", 1);
   LongToHex((long)tmp - 48);
   write(1, "\n", 1);
   show_alloc_mem();
