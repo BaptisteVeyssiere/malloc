@@ -5,12 +5,12 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 17:13:51 2017 Baptiste Veyssiere
-** Last update Mon Jan 30 17:28:37 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 14:55:51 2017 Nathan Scutari
 */
 
 #include "malloc.h"
 
-static void	my_put_nbr(int nbr)
+void	my_put_nbr(int nbr)
 {
   if (nbr >= 10)
     my_put_nbr(nbr / 10);

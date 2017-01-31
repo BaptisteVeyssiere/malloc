@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 13:16:14 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 15:25:20 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -62,6 +62,7 @@ void		free(void *ptr)
       write(2, "Pointer not aligned\n", 20);
       exit(134);
     }
+  write(1, "f", 1);
   if ((long)ptr < (long)blocks || (long)ptr > (long)sbrk(0))
     {
       write(2, "Invalid free\n", 13);
