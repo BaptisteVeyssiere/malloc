@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 17:13:51 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 14:55:51 2017 Nathan Scutari
+** Last update Tue Jan 31 16:08:03 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
@@ -29,9 +29,9 @@ void	show_alloc_mem()
     {
       if (!tmp->is_free)
 	{
-	  LongToHex((long)tmp);
+	  LongToHex((long)tmp->block);
 	  write(1, " - ", 3);
-	  LongToHex((long)((char*)tmp + tmp->size));
+	  LongToHex((long)((char*)tmp->block + tmp->size));
 	  write(1, ": ", 2);
 	  my_put_nbr(tmp->size);
 	  write(1, " bytes\n", 7);
