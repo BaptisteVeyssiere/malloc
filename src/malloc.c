@@ -5,15 +5,19 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Tue Jan 31 15:27:53 2017 Nathan Scutari
+** Last update Tue Jan 31 16:48:28 2017 Nathan Scutari
 */
 
 #include "malloc.h"
 
+void	show_alloc_mem();
+void	my_put_nbr(int);
+
 t_malloc	*blocks = NULL;
+t_malloc	*last = NULL;
 
 void	*split_block(t_malloc *block, size_t size,
-		     t_malloc *prev_free, t_malloc **last)
+		     t_malloc *prev_free)
 {
   int		align_size;
   t_malloc	*new;
@@ -23,8 +27,8 @@ void	*split_block(t_malloc *block, size_t size,
     {
       new = block->block + align_size;
       new->block = ((void*)new) + sizeof(t_malloc);
-       if (*last == block)
-	 *last = new;
+       if (last == block)
+	 last = new;
       new->prev = block;
       new->size = align8(block->size) - align_size - sizeof(t_malloc);
       block->size = size;
@@ -48,7 +52,7 @@ void	*split_block(t_malloc *block, size_t size,
   return (NULL);
 }
 
-void	*first_alloc(size_t size, t_malloc **last)
+void	*first_alloc(size_t size)
 {
   t_malloc	*tmp;
   int		alloc_size;
@@ -56,7 +60,8 @@ void	*first_alloc(size_t size, t_malloc **last)
 
   pagesize = getpagesize();
   alloc_size = alignpagesize(size + sizeof(t_malloc));
-  if ((tmp = sbrk(alloc_size)) == (void*) -1)
+  tmp = sbrk(0);
+  if ((sbrk(alloc_size)) == (void*) -1)
     return (NULL);
   tmp->block = (void*)tmp + sizeof(t_malloc);
   tmp->size = alloc_size - sizeof(t_malloc);
@@ -65,11 +70,11 @@ void	*first_alloc(size_t size, t_malloc **last)
   tmp->prev = NULL;
   tmp->next_free = NULL;
   blocks = tmp;
-  *last = blocks;
-  return (split_block(tmp, size, blocks, last));
+  last = blocks;
+  return (split_block(tmp, size, blocks));
 }
 
-void	*add_alloc(t_malloc *prev, size_t size, t_malloc **last)
+void	*add_alloc(t_malloc *prev, size_t size)
 {
   t_malloc	*tmp;
   int		alloc_size;
@@ -77,30 +82,29 @@ void	*add_alloc(t_malloc *prev, size_t size, t_malloc **last)
 
   pagesize = getpagesize();
   alloc_size = alignpagesize(size + sizeof(t_malloc));
-  if ((tmp = sbrk(alloc_size)) == (void*) -1)
+  tmp = sbrk(0);
+  if ((sbrk(alloc_size)) == (void*) -1)
     return (NULL);
   tmp->block = (void*)tmp + sizeof(t_malloc);
   tmp->size = alloc_size - sizeof(t_malloc);
   tmp->is_free = true;
   tmp->next = NULL;
-  tmp->prev = *last;
-  (*last)->next = tmp;
-  *last = tmp;
+  tmp->prev = last;
+  last->next = tmp;
+  last = tmp;
   tmp->next_free = NULL;
-  return (split_block(tmp, size, prev, last));
+  return (split_block(tmp, size, prev));
 }
 
 void	*malloc(size_t size)
 {
-  static t_malloc	*last = NULL;
   t_malloc		*tmp;
   t_malloc		*prev_free;
 
-  write(1, "a", 1);
   if (size == 0)
     return (NULL);
   if (!blocks)
-    tmp = first_alloc(size, &last);
+    tmp = first_alloc(size);
   else
     {
       prev_free = blocks;
@@ -109,7 +113,7 @@ void	*malloc(size_t size)
 	{
 	  if (tmp->is_free == true && align8(tmp->size) >= align8(size))
 	    {
-	      tmp = split_block(tmp, size, prev_free, &last);
+	      tmp = split_block(tmp, size, prev_free);
 	      break;
 	    }
 	  if (tmp->is_free == true)
@@ -117,9 +121,11 @@ void	*malloc(size_t size)
 	  tmp = tmp->next_free;
 	}
       if (!tmp)
-	tmp = add_alloc(prev_free, size, &last);
+	tmp = add_alloc(prev_free, size);
     }
-  LongToHex((long)tmp);
+  LongToHex((long)tmp - 48);
   write(1, "\n", 1);
+  show_alloc_mem();
+  write(1, "\n\n", 2);
   return (tmp);
 }

@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Tue Jan 31 10:22:04 2017 Nathan Scutari
-** Last update Tue Jan 31 15:19:38 2017 Nathan Scutari
+** Last update Tue Jan 31 16:09:21 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -14,12 +14,12 @@ int	main()
 {
   char		*str;
 
-  for (int i = 0; i < 100000; ++i)
-    {
-      str = malloc(10);
-    }
-  free(str);
-  if ((str == malloc(1)))
-    write(1, "lol ca marche\n", 15);
+  malloc(10);
+  malloc(500);
+  malloc(9753);
+  free(malloc(1230));
+  malloc(2);
+  malloc(9);
+  malloc(1000);
   return (0);
 }

@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 16:41:27 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 16:45:34 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -23,16 +23,6 @@ t_malloc	*get_free_tmp(void *ptr)
   t_malloc	*tmp;
   t_malloc	*free;
 
-  tmp = blocks;
-  while (tmp)
-    {
-      write(1, "tmp_block = ", 10);
-      LongToHex((long)tmp->block);
-      write(1, "\n", 1);
-      if (tmp->block == ptr)
-	write(1, "TROUVE\n", 7);
-      tmp = tmp->next;
-    }
   tmp = blocks;
   free = blocks;
   while (tmp)
@@ -68,7 +58,6 @@ void		free(void *ptr)
 {
   t_malloc	*tmp;
 
-  write(1, "Free:\n", 6);
   if (ptr == NULL)
     return ;
   if (((long)ptr % 4) != 0)

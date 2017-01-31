@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Tue Jan 31 12:12:51 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 16:37:13 2017 Nathan Scutari
 */
 
 #ifndef MY_MALLOC_H_
@@ -34,5 +34,6 @@ typedef struct	s_malloc
 }		t_malloc;
 
 extern t_malloc	*blocks;
+extern t_malloc	*last;
 
 #endif /* !MY_MALLOC_H_ */
