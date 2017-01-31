@@ -5,42 +5,46 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Mon Jan 30 17:07:51 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 10:44:20 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
 
+void	free_error_msg(char *err, int length, void *ptr)
+{
+  write(2, err, length);
+  LongToHex((long)ptr);
+  write(2, "\n", 1);
+  exit(134);
+}
+
 t_malloc	*get_free_tmp(void *ptr)
 {
   t_malloc	*tmp;
+  t_malloc	*free;
 
   tmp = blocks;
+  free = blocks;
   while (tmp)
     {
+      if (tmp->is_free)
+	free = tmp;
       if (tmp->block == ptr)
 	break;
       tmp = tmp->next;
     }
   if (tmp == NULL)
-    {
-      write(2, "free(): invalid pointer: ", 25);
-      LongToHex((long)ptr);
-      write(2, "\n", 1);
-      exit(134);
-    }
-  if (tmp->is_free)
-    {
-      write(2, "double free or corruption: ", 27);
-      LongToHex((long)ptr);
-      write(2, "\n", 1);
-      exit(134);
-    }
+    free_error_msg("free(): invalid pointer: ", 25, ptr);
+  if (tmp->is_free == true)
+    free_error_msg("double free or corruption: ", 27, ptr);
+  free->next_free = tmp;
   return (tmp);
 }
 
 void	fusion(t_malloc *tmp)
 {
   tmp->size += tmp->next->size + sizeof(t_malloc);
+  tmp->next_free = tmp->next->next_free;
   tmp->next = tmp->next->next;
   if (tmp->next)
     tmp->next->prev = tmp;
@@ -64,7 +68,7 @@ void		free(void *ptr)
     }
 
   tmp = get_free_tmp(ptr);
-  tmp->is_free = 1;
+  tmp->is_free = true;
   if (tmp->prev && tmp->prev->is_free)
     fusion(tmp->prev);
   if (tmp->next && tmp->next->is_free)

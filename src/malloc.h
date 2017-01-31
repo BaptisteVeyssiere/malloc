@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Tue Jan 31 10:21:43 2017 Nathan Scutari
+** Last update Tue Jan 31 12:12:51 2017 Baptiste Veyssiere
 */
 
 #ifndef MY_MALLOC_H_
@@ -13,6 +13,7 @@
 
 #define _GNU_SOURCE
 
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 

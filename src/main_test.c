@@ -5,18 +5,19 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Tue Jan 31 10:22:04 2017 Nathan Scutari
-** Last update Tue Jan 31 12:10:01 2017 Nathan Scutari
+** Last update Tue Jan 31 12:23:46 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
 
 int	main()
 {
-  t_malloc	*mal;
   char		*str;
 
-  str = malloc(20);
-  str = malloc(20);
-  str = malloc(6000);
+  for (int i = 0; i < 100000; ++i)
+    str = malloc(2);
+  free(str);
+  if ((str == malloc(2)))
+    write(1, "lol ca marche\n", 15);
   return (0);
 }

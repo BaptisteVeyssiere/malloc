@@ -5,11 +5,9 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Tue Jan 31 12:09:51 2017 Nathan Scutari
+** Last update Tue Jan 31 12:13:27 2017 Baptiste Veyssiere
 */
 
-#include <stdbool.h>
-#include <unistd.h>
 #include "malloc.h"
 
 t_malloc	*blocks = NULL;
@@ -104,7 +102,6 @@ void	*malloc(size_t size)
   t_malloc		*tmp;
   t_malloc		*prev;
   t_malloc		*prev_free;
-  char			*str;
 
   if (size == 0)
     return (NULL);
