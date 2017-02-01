@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Wed Feb  1 10:51:30 2017 Baptiste Veyssiere
+** Last update Wed Feb  1 11:03:53 2017 Baptiste Veyssiere
 */
 
 void	show_alloc_mem();
@@ -26,22 +26,31 @@ void	free_error_msg(char *err, int length, void *ptr)
 t_malloc	*get_free_tmp(void *ptr)
 {
   t_malloc	*tmp;
+  t_malloc	*tmp2;
   t_malloc	*free;
 
   tmp = blocks;
   free = blocks;
-  while (tmp)
+  /*while (tmp)
     {
       if (tmp->is_free == true)
 	free = tmp;
       if (tmp->block == ptr)
 	break;
       tmp = tmp->next;
-    }
-  if (tmp == NULL)
+    }*/
+  tmp = ((t_malloc*)((void*)ptr - 48));
+  if (tmp->block != ptr)
     free_error_msg("free(): invalid pointer: ", 25, ptr);
   if (tmp->is_free == true)
     free_error_msg("double free or corruption: ", 27, ptr);
+  tmp2 = tmp;
+  while (tmp2 != blocks)
+    {
+      if (tmp->is_free == true)
+	free = tmp2;
+      tmp2 = tmp2->prev;
+    }
   tmp->next_free = free->next_free;
   if (tmp != blocks)
     free->next_free = tmp;
@@ -71,7 +80,7 @@ void		free(void *ptr)
       write(2, "Pointer not aligned\n", 20);
       exit(134);
     }
-  if ((long)ptr < (long)blocks || (long)ptr > (long)sbrk(0))
+  if ((long)ptr < ((long)blocks + 48) || (long)ptr > (long)sbrk(0))
     {
       write(2, "Invalid free\n", 13);
       return ;
