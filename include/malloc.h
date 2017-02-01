@@ -5,18 +5,21 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Tue Jan 31 17:24:09 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 16:37:13 2017 Nathan Scutari
 */
 
-#ifndef MALLOC_H_
-# define MALLOC_H_
+#ifndef MY_MALLOC_H_
+# define MY_MALLOC_H_
 
 #define _GNU_SOURCE
 
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 
 # define align8(x) ((x-1)/8*8+8)
+# define alignpagesize(x) ((x-1)/pagesize*pagesize+pagesize)
+
 
 int	LongToHex(long);
 
@@ -27,9 +30,10 @@ typedef struct	s_malloc
   struct s_malloc	*prev;
   int			is_free;
   void			*block;
-  char			data[1];
+  struct s_malloc	*next_free;
 }		t_malloc;
 
 extern t_malloc	*blocks;
+extern t_malloc	*last;
 
-#endif /* !MALLOC_H_ */
+#endif /* !MY_MALLOC_H_ */

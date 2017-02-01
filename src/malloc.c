@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Wed Feb  1 10:36:59 2017 Nathan Scutari
+** Last update Wed Feb  1 10:51:49 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
@@ -101,9 +101,6 @@ void	*malloc(size_t size)
   t_malloc		*tmp;
   t_malloc		*prev_free;
 
-  write(1, "Malloc : ", 9);
-  my_put_nbr(size);
-  write(1, "\n", 1);
   if (size == 0)
     return (NULL);
   if (!blocks)
@@ -126,14 +123,5 @@ void	*malloc(size_t size)
       if (!tmp)
 	tmp = add_alloc(prev_free, size);
     }
-  /*  prev_free = blocks;
-  while (prev_free)
-    {
-      if (prev_free->block == tmp)
-	write(1, "found\n", 6);
-      prev_free = prev_free->next;
-      }*/
-  show_free_mem();
-  show_alloc_mem();
   return (tmp);
 }

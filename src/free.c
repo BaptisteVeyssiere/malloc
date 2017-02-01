@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Wed Feb  1 10:37:09 2017 Nathan Scutari
+** Last update Wed Feb  1 10:51:30 2017 Baptiste Veyssiere
 */
 
 void	show_alloc_mem();
@@ -43,7 +43,8 @@ t_malloc	*get_free_tmp(void *ptr)
   if (tmp->is_free == true)
     free_error_msg("double free or corruption: ", 27, ptr);
   tmp->next_free = free->next_free;
-  free->next_free = tmp;
+  if (tmp != blocks)
+    free->next_free = tmp;
   return (tmp);
 }
 
@@ -76,14 +77,9 @@ void		free(void *ptr)
       return ;
     }
   tmp = get_free_tmp(ptr);
-  write(1, "Free ", 5);
-  my_put_nbr(tmp->size);
-  write(1, "\n", 1);
   tmp->is_free = true;
   if (tmp->next && tmp->next->is_free == true)
       fusion(tmp);
   if (tmp->prev && tmp->prev->is_free == true)
     fusion(tmp->prev);
-  show_free_mem();
-  show_alloc_mem();
 }
