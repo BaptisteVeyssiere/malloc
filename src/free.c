@@ -5,8 +5,11 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 21:34:24 2017 Nathan Scutari
+** Last update Wed Feb  1 10:37:09 2017 Nathan Scutari
 */
+
+void	show_alloc_mem();
+void	my_put_nbr(int);
 
 #include "malloc.h"
 
@@ -29,7 +32,7 @@ t_malloc	*get_free_tmp(void *ptr)
   free = blocks;
   while (tmp)
     {
-      if (tmp->is_free)
+      if (tmp->is_free == true)
 	free = tmp;
       if (tmp->block == ptr)
 	break;
@@ -81,4 +84,6 @@ void		free(void *ptr)
       fusion(tmp);
   if (tmp->prev && tmp->prev->is_free == true)
     fusion(tmp->prev);
+  show_free_mem();
+  show_alloc_mem();
 }

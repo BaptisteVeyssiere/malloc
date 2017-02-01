@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Mon Jan 30 17:25:55 2017 Baptiste Veyssiere
+** Last update Tue Jan 31 17:24:09 2017 Baptiste Veyssiere
 */
 
 #ifndef MALLOC_H_
