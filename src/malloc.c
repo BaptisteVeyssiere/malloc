@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Tue Jan 31 17:04:12 2017 Nathan Scutari
+** Last update Tue Jan 31 21:29:34 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -34,8 +34,8 @@ void	*split_block(t_malloc *block, size_t size,
       block->size = size;
       new->next = block->next;
       block->next = new;
+      new->next_free = block->next_free;
       block->next_free = NULL;
-      new->next_free = prev_free->next_free;
       prev_free->next_free = new;
       if (new->next)
 	new->next->prev = new;
@@ -101,6 +101,9 @@ void	*malloc(size_t size)
   t_malloc		*tmp;
   t_malloc		*prev_free;
 
+  write(1, "Malloc : ", 9);
+  my_put_nbr(size);
+  write(1, "\n", 1);
   if (size == 0)
     return (NULL);
   if (!blocks)
@@ -123,11 +126,5 @@ void	*malloc(size_t size)
       if (!tmp)
 	tmp = add_alloc(prev_free, size);
     }
-  my_put_nbr(last->size);
-  write(1, "\n", 1);
-  LongToHex((long)tmp - 48);
-  write(1, "\n", 1);
-  show_alloc_mem();
-  write(1, "\n\n", 2);
   return (tmp);
 }

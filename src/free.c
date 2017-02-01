@@ -5,10 +5,12 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 17:09:27 2017 Nathan Scutari
+** Last update Tue Jan 31 21:34:24 2017 Nathan Scutari
 */
 
 #include "malloc.h"
+
+void	my_put_nbr(int);
 
 void	free_error_msg(char *err, int length, void *ptr)
 {
@@ -70,8 +72,10 @@ void		free(void *ptr)
       write(2, "Invalid free\n", 13);
       return ;
     }
-
   tmp = get_free_tmp(ptr);
+  write(1, "Free ", 5);
+  my_put_nbr(tmp->size);
+  write(1, "\n", 1);
   tmp->is_free = true;
   if (tmp->next && tmp->next->is_free == true)
       fusion(tmp);
