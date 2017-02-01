@@ -5,15 +5,10 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 16:04:16 2017 Baptiste Veyssiere
-** Last update Wed Feb  1 11:03:53 2017 Baptiste Veyssiere
+** Last update Wed Feb  1 11:18:27 2017 Baptiste Veyssiere
 */
 
-void	show_alloc_mem();
-void	my_put_nbr(int);
-
 #include "malloc.h"
-
-void	my_put_nbr(int);
 
 void	free_error_msg(char *err, int length, void *ptr)
 {
@@ -29,17 +24,8 @@ t_malloc	*get_free_tmp(void *ptr)
   t_malloc	*tmp2;
   t_malloc	*free;
 
-  tmp = blocks;
   free = blocks;
-  /*while (tmp)
-    {
-      if (tmp->is_free == true)
-	free = tmp;
-      if (tmp->block == ptr)
-	break;
-      tmp = tmp->next;
-    }*/
-  tmp = ((t_malloc*)((void*)ptr - 48));
+  tmp = (t_malloc*)((void*)ptr - sizeof(t_malloc));
   if (tmp->block != ptr)
     free_error_msg("free(): invalid pointer: ", 25, ptr);
   if (tmp->is_free == true)
@@ -47,8 +33,11 @@ t_malloc	*get_free_tmp(void *ptr)
   tmp2 = tmp;
   while (tmp2 != blocks)
     {
-      if (tmp->is_free == true)
-	free = tmp2;
+      if (tmp2->is_free == true)
+	{
+	  free = tmp2;
+	  break;
+	}
       tmp2 = tmp2->prev;
     }
   tmp->next_free = free->next_free;

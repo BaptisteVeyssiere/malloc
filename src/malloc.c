@@ -5,13 +5,10 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Wed Feb  1 10:51:49 2017 Baptiste Veyssiere
+** Last update Wed Feb  1 11:17:07 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
-
-void	show_alloc_mem();
-void	my_put_nbr(int);
 
 t_malloc	*blocks = NULL;
 t_malloc	*last = NULL;
