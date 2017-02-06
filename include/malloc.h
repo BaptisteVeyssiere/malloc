@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Tue Jan 31 16:37:13 2017 Nathan Scutari
+** Last update Thu Feb  2 15:42:12 2017 Nathan Scutari
 */
 
 #ifndef MY_MALLOC_H_
@@ -13,13 +13,13 @@
 
 #define _GNU_SOURCE
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 
 # define align8(x) ((x-1)/8*8+8)
 # define alignpagesize(x) ((x-1)/pagesize*pagesize+pagesize)
-
 
 int	LongToHex(long);
 
@@ -33,7 +33,13 @@ typedef struct	s_malloc
   struct s_malloc	*next_free;
 }		t_malloc;
 
-extern t_malloc	*blocks;
-extern t_malloc	*last;
+typedef struct		s_glob
+{
+  t_malloc		*blocks;
+  t_malloc		*last;
+  pthread_mutex_t	mutex;
+}			t_glob;
+
+extern t_glob	glob;
 
 #endif /* !MY_MALLOC_H_ */

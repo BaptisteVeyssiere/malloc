@@ -5,7 +5,7 @@
 ** Login   <veyssi_b@epitech.net>
 **
 ** Started on  Mon Jan 30 15:29:31 2017 Baptiste Veyssiere
-** Last update Tue Jan 31 20:54:36 2017 Nathan Scutari
+** Last update Thu Feb  2 15:39:46 2017 Nathan Scutari
 */
 
 #include "malloc.h"
@@ -24,7 +24,7 @@ void		*realloc(void *ptr, size_t size)
       return (NULL);
     }
 
-  tmp = blocks;
+  tmp = glob.blocks;
   while (tmp)
     {
       if (tmp->block == ptr)

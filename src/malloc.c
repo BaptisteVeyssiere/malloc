@@ -5,41 +5,44 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Wed Feb  1 11:17:07 2017 Baptiste Veyssiere
+** Last update Mon Feb  6 11:15:42 2017 Nathan Scutari
 */
 
 #include "malloc.h"
 
-t_malloc	*blocks = NULL;
-t_malloc	*last = NULL;
+t_glob		glob = { NULL, NULL, PTHREAD_MUTEX_INITIALIZER };
+
+void	*split_ok(t_malloc *block, size_t size, t_malloc *prev_free, int align_size)
+{
+  t_malloc	*new;
+
+  new = block->block + align_size;
+  new->block = ((void*)new) + sizeof(t_malloc);
+  if (glob.last == block)
+    glob.last = new;
+  new->prev = block;
+  new->size = align8(block->size) - align_size - sizeof(t_malloc);
+  block->size = size;
+  new->next = block->next;
+  block->next = new;
+  new->next_free = block->next_free;
+  block->next_free = NULL;
+  prev_free->next_free = new;
+  if (new->next)
+    new->next->prev = new;
+  block->is_free = false;
+  new->is_free = true;
+  return (block->block);
+}
 
 void	*split_block(t_malloc *block, size_t size,
 		     t_malloc *prev_free)
 {
   int		align_size;
-  t_malloc	*new;
 
   align_size = align8(size);
   if (align8(block->size) >= align_size + sizeof(t_malloc) + 4)
-    {
-      new = block->block + align_size;
-      new->block = ((void*)new) + sizeof(t_malloc);
-       if (last == block)
-	 last = new;
-      new->prev = block;
-      new->size = align8(block->size) - align_size - sizeof(t_malloc);
-      block->size = size;
-      new->next = block->next;
-      block->next = new;
-      new->next_free = block->next_free;
-      block->next_free = NULL;
-      prev_free->next_free = new;
-      if (new->next)
-	new->next->prev = new;
-      block->is_free = false;
-      new->is_free = true;
-      return (block->block);
-    }
+    return (split_ok(block, size, prev_free, align_size));
   else
     {
       block->is_free = false;
@@ -66,9 +69,9 @@ void	*first_alloc(size_t size)
   tmp->next = NULL;
   tmp->prev = NULL;
   tmp->next_free = NULL;
-  blocks = tmp;
-  last = blocks;
-  return (split_block(tmp, size, blocks));
+  glob.blocks = tmp;
+  glob.last = glob.blocks;
+  return (split_block(tmp, size, glob.blocks));
 }
 
 void	*add_alloc(t_malloc *prev, size_t size)
@@ -86,11 +89,30 @@ void	*add_alloc(t_malloc *prev, size_t size)
   tmp->size = alloc_size - sizeof(t_malloc);
   tmp->is_free = true;
   tmp->next = NULL;
-  tmp->prev = last;
-  last->next = tmp;
-  last = tmp;
+  tmp->prev = glob.last;
+  glob.last->next = tmp;
+  glob.last = tmp;
   tmp->next_free = NULL;
   return (split_block(tmp, size, prev));
+}
+
+void	*find_free_space(t_malloc **prev_free, size_t size)
+{
+  t_malloc	*tmp;
+
+  tmp = glob.blocks;
+  while (tmp)
+    {
+      if (tmp->is_free == true && align8(tmp->size) >= align8(size))
+	{
+	  tmp = split_block(tmp, size, *prev_free);
+	  break;
+	}
+      if (tmp->is_free == true)
+	*prev_free = tmp;
+      tmp = tmp->next_free;
+    }
+  return (tmp);
 }
 
 void	*malloc(size_t size)
@@ -100,25 +122,15 @@ void	*malloc(size_t size)
 
   if (size == 0)
     return (NULL);
-  if (!blocks)
+  pthread_mutex_lock(&glob.mutex);
+  if (!glob.blocks)
     tmp = first_alloc(size);
   else
     {
-      prev_free = blocks;
-      tmp = blocks;
-      while (tmp)
-	{
-	  if (tmp->is_free == true && align8(tmp->size) >= align8(size))
-	    {
-	      tmp = split_block(tmp, size, prev_free);
-	      break;
-	    }
-	  if (tmp->is_free == true)
-	    prev_free = tmp;
-	  tmp = tmp->next_free;
-	}
-      if (!tmp)
+      prev_free = glob.blocks;
+      if (!(tmp = find_free_space(&prev_free, size)))
 	tmp = add_alloc(prev_free, size);
     }
+  pthread_mutex_unlock(&glob.mutex);
   return (tmp);
 }
