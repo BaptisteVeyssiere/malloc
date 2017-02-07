@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Mon Feb  6 11:25:53 2017 Nathan Scutari
+** Last update Tue Feb  7 12:24:03 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
@@ -120,7 +120,7 @@ void	*malloc(size_t size)
   t_malloc		*tmp;
   t_malloc		*prev_free;
 
-  if (size == 0)
+  if (size > 2000000000)
     return (NULL);
   pthread_mutex_lock(&glob.mutex);
   if (!glob.blocks)
