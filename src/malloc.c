@@ -5,54 +5,14 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Mon Jan 30 14:47:14 2017 Nathan Scutari
-** Last update Tue Feb  7 12:24:03 2017 Baptiste Veyssiere
+** Last update Sun Feb 12 16:52:33 2017 Baptiste Veyssiere
 */
 
 #include "malloc.h"
 
 t_glob		glob = { NULL, NULL, PTHREAD_MUTEX_INITIALIZER };
 
-void	*split_ok(t_malloc *block, size_t size, t_malloc *prev_free, int align_size)
-{
-  t_malloc	*new;
-
-  new = block->block + align_size;
-  new->block = ((void*)new) + sizeof(t_malloc);
-  if (glob.last == block)
-    glob.last = new;
-  new->prev = block;
-  new->size = align8(block->size) - align_size - sizeof(t_malloc);
-  block->size = size;
-  new->next = block->next;
-  block->next = new;
-  new->next_free = block->next_free;
-  block->next_free = NULL;
-  prev_free->next_free = new;
-  if (new->next)
-    new->next->prev = new;
-  block->is_free = false;
-  new->is_free = true;
-  return (block->block);
-}
-
-void	*split_block(t_malloc *block, size_t size,
-		     t_malloc *prev_free)
-{
-  int		align_size;
-
-  align_size = align8(size);
-  if (align8(block->size) >= align_size + sizeof(t_malloc) + 4)
-    return (split_ok(block, size, prev_free, align_size));
-  else
-    {
-      block->is_free = false;
-      prev_free->next_free = block->next_free;
-      return (block->block);
-    }
-  return (NULL);
-}
-
-void	*first_alloc(size_t size)
+static void	*first_alloc(size_t size)
 {
   t_malloc	*tmp;
   int		alloc_size;
@@ -74,7 +34,7 @@ void	*first_alloc(size_t size)
   return (split_block(tmp, size, glob.blocks));
 }
 
-void	*add_alloc(t_malloc *prev, size_t size)
+static void	*add_alloc(t_malloc *prev, size_t size)
 {
   t_malloc	*tmp;
   int		alloc_size;
@@ -96,7 +56,7 @@ void	*add_alloc(t_malloc *prev, size_t size)
   return (split_block(tmp, size, prev));
 }
 
-void	*find_free_space(t_malloc **prev_free, size_t size)
+static void	*find_free_space(t_malloc **prev_free, size_t size)
 {
   t_malloc	*tmp;
 

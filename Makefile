@@ -16,9 +16,10 @@ CC	= gcc
 MKDIR	= mkdir -p
 
 SRC	= src/malloc.c \
+	src/malloc_split.c \
 	src/free.c \
 	src/realloc.c \
-	src/LongToHex.c \
+	src/longtohex.c \
 	src/calloc.c \
 	src/show_alloc_mem.c
 

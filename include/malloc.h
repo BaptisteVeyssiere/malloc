@@ -5,7 +5,7 @@
 ** Login   <scutar_n@epitech.net>
 **
 ** Started on  Wed Jan 25 10:51:19 2017 Nathan Scutari
-** Last update Mon Feb  6 11:23:12 2017 Nathan Scutari
+** Last update Sun Feb 12 16:54:00 2017 Baptiste Veyssiere
 */
 
 #ifndef MY_MALLOC_H_
@@ -20,8 +20,6 @@
 
 # define align8(x) ((x-1)/8*8+8)
 # define alignpagesize(x) ((x-1)/pagesize*pagesize+pagesize)
-
-int	LongToHex(long);
 
 typedef struct	s_malloc
 {
@@ -41,5 +39,9 @@ typedef struct		s_glob
 }			t_glob;
 
 extern t_glob	glob;
+
+int	LongToHex(long);
+void	*split_o(t_malloc *block, size_t size, t_malloc *prev_free, int align_size);
+void	*split_block(t_malloc *block, size_t size, t_malloc *prev_free);
 
 #endif /* !MY_MALLOC_H_ */
